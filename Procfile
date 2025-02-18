@@ -1,1 +1,1 @@
-web: phyton app.py
+web: python app.py
