@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos en tiempo real</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <h1>Datos del Sensor en Tiempo Real</h1>
+    <p><strong>Temperatura:</strong> <span id="temp">-</span>°C</p>
+    <p><strong>Humedad:</strong> <span id="humedad">-</span>%</p>
+    <p><strong>Luz:</strong> <span id="luz">-</span></p>
+
+    <script>
+        var socket = io("https://TUSERVIDOR.render.com");
+
+        socket.on("actualizar_datos", function(datos) {
+            document.getElementById("temp").innerText = datos.temperatura;
+            document.getElementById("humedad").innerText = datos.humedad;
+            document.getElementById("luz").innerText = datos.luz;
+        });
+    </script>
+</body>
+</html>
