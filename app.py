@@ -5,6 +5,10 @@ app = Flask(__name__)
 
 datos_sensores = {"temperatura": None, "humedad": None, "luz": None}
 
+@app.route('/')
+def home():
+    return "¡Servidor Flask en Render funcionando!", 200  # Nueva ruta para evitar error 404
+
 @app.route('/datos', methods=['POST'])
 def recibir_datos():
     global datos_sensores
