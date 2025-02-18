@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -15,5 +16,7 @@ def recibir_datos():
 def enviar_datos():
     return jsonify(datos_sensores), 200
 
-if __name__ == '_main_':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # Usa el puerto que Render asigna
+    app.run(host='0.0.0.0', port=port, debug=True)
+
