@@ -13,7 +13,7 @@
     <p><strong>Luz:</strong> <span id="luz">-</span></p>
 
     <script>
-        var socket = io("https://TUSERVIDOR.render.com");
+        var socket = io("https://iafa-h9tv.onrender.com/");
 
         socket.on("actualizar_datos", function(datos) {
             document.getElementById("temp").innerText = datos.temperatura;
