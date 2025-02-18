@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 datos_sensores = {"temperatura": None, "humedad": None, "luz": None}
 
@@ -15,5 +15,5 @@ def recibir_datos():
 def enviar_datos():
     return jsonify(datos_sensores), 200
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(host='0.0.0.0', port=5000, debug=True)
