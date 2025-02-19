@@ -135,7 +135,7 @@ async function mostrarGrafico(requisitos) {
                 {
                     label: 'Condiciones Actuales',
                     data: [
-                        parseInt(data.luminosidad),
+                        parseInt(data.luz),
                         parseInt(data.humedad),
                         parseInt(data.temperatura)
                     ],
