@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -61,7 +60,53 @@
         <p>&copy; 2025 ColSeed by David Leon - Julian Marin</p>
     </footer>
 
-    <script src="scriptmom.js"></script>
+    <script>
+        async function monitorearCultivo() {
+            document.getElementById("monitoreoResultados").innerHTML = "<p>Monitoreo en proceso...</p>";
+
+            try {
+                console.log("Obteniendo datos del sensor...");
+                const response = await fetch("https://iafa-h9tv.onrender.com/datos");
+
+                if (!response.ok) throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+
+                const data = await response.json();
+                console.log("Datos obtenidos:", data);
+
+                // Usar los valores reales del sensor
+                const temp = data.temperatura;
+                const hum = data.humedad;
+                const luz = data.luz;
+
+                // Construir y mostrar la respuesta HTML con los valores reales
+                document.getElementById("monitoreoResultados").innerHTML = construirRespuestaHTML(temp, hum, luz);
+            } catch (error) {
+                console.error("Error al obtener datos del servidor:", error);
+                document.getElementById("monitoreoResultados").innerHTML = "<p>Error al obtener datos del sensor.</p>";
+            }
+        }
+
+        function construirRespuestaHTML(temp, hum, luz) {
+            return `
+                <div class="container">
+                    ${crearCard("🌡 Temperatura", temp, "°C", "temp")}
+                    ${crearCard("💧 Humedad", hum, "%", "hum")}
+                    ${crearCard("☀️ Luz", luz, " lux", "luz")}
+                </div>
+            `;
+        }
+
+        function crearCard(titulo, valor, unidad, clase) {
+            return `
+                <div class="card ${clase}">
+                    <h2>${titulo}</h2>
+                    <p>${isNaN(valor) ? "Error al leer sensor" : `${valor} ${unidad}`}</p>
+                </div>
+            `;
+        }
+
+        document.getElementById("btnMonitorear").addEventListener("click", monitorearCultivo);
+    </script>
 </body>
 
 </html>
