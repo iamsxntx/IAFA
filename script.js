@@ -151,3 +151,7 @@ async function mostrarGrafico(requisitos) {
         }
     });
 }
+
+setInterval(obtenerDatos, 3000);
+
+obtenerDatos();
