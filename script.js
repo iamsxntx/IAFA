@@ -36,8 +36,17 @@ function analizarCultivo() {
 
 async function render() {
     try {
+        console.log('Intentando obtener datos del servidor...');
         const response = await fetch('https://iafa-h9tv.onrender.com/data');
+        console.log('Respuesta del servidor:', response);
+
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        
         const data = await response.json();
+        console.log('Datos obtenidos:', data);
+
         return {
             luminosidad: data.luminosidad,
             humedad: data.humedad,
@@ -54,81 +63,51 @@ async function render() {
 }
 
 async function mostrarGrafico(requisitos) {
-    const container = document.getElementById('graficoContainer');
-    const oldCanvas = document.getElementById('graficoCondiciones');
-    if (oldCanvas) {
-        oldCanvas.remove();
-    }
-    const nuevoCanvas = document.createElement('canvas');
-    nuevoCanvas.id = 'graficoCondiciones';
-    nuevoCanvas.width = 500;
-    nuevoCanvas.height = 300;
-    container.appendChild(nuevoCanvas);
-    const ctx = nuevoCanvas.getContext('2d');
+    const container = document.getElementById("graficoContainer");
+
+    const data = await render();
 
     if (chart) {
         chart.destroy();
     }
 
-    // Llamada a la función render para obtener datos reales de los sensores
-    const datosReales = await render(); // Asegúrate de que 'render' devuelva un objeto con los datos necesarios
+    const ctx = document.createElement("canvas");
+    container.innerHTML = '';
+    container.appendChild(ctx);
 
     chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Luminosidad (h)', 'Humedad (%)', 'Temperatura (°C)'],
+            labels: ['Luminosidad', 'Humedad', 'Temperatura'],
             datasets: [
                 {
-                    label: 'Requisitos óptimos',
+                    label: 'Requisitos del Cultivo',
                     data: [
-                        parseFloat(requisitos.luminosidad.split('-')[0]),
-                        parseFloat(requisitos.humedad.split('-')[0]),
-                        parseFloat(requisitos.temperatura.split('-')[0])
+                        parseInt(requisitos.luminosidad),
+                        parseInt(requisitos.humedad),
+                        parseInt(requisitos.temperatura)
                     ],
-                    backgroundColor: 'rgba(76, 175, 80, 0.8)',
-                    borderColor: 'rgba(76, 175, 80, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
                 },
                 {
-                    label: 'Condiciones actuales',
+                    label: 'Condiciones Actuales',
                     data: [
-                        datosReales.luminosidad,
-                        datosReales.humedad,
-                        datosReales.temperatura
+                        parseInt(data.luminosidad),
+                        parseInt(data.humedad),
+                        parseInt(data.temperatura)
                     ],
-                    backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 }
             ]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'top' },
-                tooltip: {
-                    enabled: true,
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
-                        }
-                    }
-                }
-            },
             scales: {
                 y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: "#000",
-                        font: { size: 14 }
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: "#000",
-                        font: { size: 14 }
-                    }
+                    beginAtZero: true
                 }
             }
         }
