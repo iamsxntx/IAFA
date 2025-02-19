@@ -1,86 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ColSeed - Monitoreo de Cultivo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { display: flex; flex-direction: column; min-height: 100vh; }
-        .container { flex: 1; }
-        .card { background: white; padding: 20px; margin: 15px auto; border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); max-width: 300px; text-align: center; }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 800px;
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
         .temp { border-left: 5px solid #ff5722; }
         .hum { border-left: 5px solid #03a9f4; }
         .luz { border-left: 5px solid #ffeb3b; }
+
+        #alerta {
+            margin-top: 10px;
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <header class="bg-success text-white text-center py-4">
         <h1>COLSEED</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">Inicio</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="analizar.html">Analizar Suelo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="monitoreo.html">Monitoreo de Cultivo</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
+
     <div class="container mt-4">
-        <section id="monitoreo" class="mb-5">
-            <h2>Monitoreo de Cultivo</h2>
-            <button id="btnMonitorear" class="btn btn-success">Monitorear</button>
-            <div id="monitoreoResultados" class="mt-4"></div>
-            <div id="alertas" class="mt-3 text-danger font-weight-bold"></div>
-        </section>
+        <h2 class="text-center">Monitoreo de Cultivo</h2>
+        <button id="btnMonitorear" class="btn btn-success btn-block">Monitorear</button>
+        <div id="monitoreoResultados" class="mt-4"></div>
+        <p id="alerta" class="text-center"></p>
     </div>
+
     <footer class="bg-success text-white text-center py-3">
         <p>&copy; 2025 ColSeed by David Leon - Julian Marin</p>
     </footer>
+
     <script>
-        document.getElementById("btnMonitorear").addEventListener("click", monitorearCultivo);
-        
-        async function monitorearCultivo() {
+        document.getElementById("btnMonitorear").addEventListener("click", async function() {
             document.getElementById("monitoreoResultados").innerHTML = "<p>Monitoreo en proceso...</p>";
-            document.getElementById("alertas").innerHTML = "";
+            document.getElementById("alerta").innerHTML = "";
             
             try {
                 const response = await fetch("https://iafa-h9tv.onrender.com/datos");
-                if (!response.ok) throw new Error(`Error en la respuesta del servidor: ${response.status}`);
-                const data = await response.json();
+                if (!response.ok) throw new Error("Error en la respuesta del servidor");
                 
-                const temp = data.temperatura;
-                const hum = data.humedad;
-                const luz = data.luz;
-                document.getElementById("monitoreoResultados").innerHTML = construirRespuestaHTML(temp, hum, luz);
-                evaluarCondiciones(temp, hum, luz);
+                const data = await response.json();
+                const { temperatura, humedad, luz } = data;
+                document.getElementById("monitoreoResultados").innerHTML = `
+                    <div class="card temp"><h3>🌡 Temperatura</h3><p>${temperatura} °C</p></div>
+                    <div class="card hum"><h3>💧 Humedad</h3><p>${humedad} %</p></div>
+                    <div class="card luz"><h3>☀️ Luz</h3><p>${luz} lux</p></div>
+                `;
+                
+                let mensaje = "";
+                if (temperatura > 30) mensaje += "⚠️ Temperatura elevada, riesgo de estrés térmico. ";
+                if (humedad > 80) mensaje += "⚠️ Humedad excesiva, riesgo de hongos. ";
+                if (luz > 50000) mensaje += "⚠️ Luz excesiva, posible sequía. ";
+                document.getElementById("alerta").innerHTML = mensaje;
             } catch (error) {
-                console.error("Error al obtener datos del servidor:", error);
                 document.getElementById("monitoreoResultados").innerHTML = "<p>Error al obtener datos del sensor.</p>";
             }
-        }
-        
-        function construirRespuestaHTML(temp, hum, luz) {
-            return `
-                <div class="container">
-                    ${crearCard("🌡 Temperatura", temp, "°C", "temp")}
-                    ${crearCard("💧 Humedad", hum, "%", "hum")}
-                    ${crearCard("☀️ Luz", luz, " lux", "luz")}
-                </div>
-            `;
-        }
-        
-        function crearCard(titulo, valor, unidad, clase) {
-            return `
-                <div class="card ${clase}">
-                    <h2>${titulo}</h2>
-                    <p>${isNaN(valor) ? "Error al leer sensor" : `${valor} ${unidad}`}</p>
-                </div>
-            `;
-        }
-        
-        function evaluarCondiciones(temp, hum, luz) {
-            let alertas = "";
-            if (luz > 10000) alertas += "⚠️ Demasiada luz, riesgo de sequía.<br>";
-            if (hum < 40) alertas += "⚠️ Baja humedad, es necesario regar.<br>";
-            if (hum > 80) alertas += "⚠️ Humedad excesiva, riesgo de hongos.<br>";
-            if (temp < 10) alertas += "⚠️ Temperatura muy baja, riesgo de heladas.<br>";
-            if (temp > 35) alertas += "⚠️ Temperatura muy alta, posible daño al cultivo.<br>";
-            document.getElementById("alertas").innerHTML = alertas || "✅ Condiciones óptimas.";
-        }
+        });
     </script>
 </body>
+
 </html>
