@@ -72,7 +72,7 @@ function mostrarGrafico(requisitos) {
                 },
                 {
                     label: 'Condiciones actuales',
-                    data: [9, 650, 62], // Simulación de datos actuales
+                    data: [9, 650, 62,], // Simulación de datos actuales
                     backgroundColor: 'rgba(255, 99, 132, 0.8)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
