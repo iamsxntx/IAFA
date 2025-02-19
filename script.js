@@ -54,6 +54,9 @@ function mostrarGrafico(requisitos) {
         chart.destroy();
     }
 
+    // Llamada a la función render para obtener datos reales de los sensores
+    const datosReales = render(); // Asegúrate de que 'render' devuelva un objeto con los datos necesarios
+
     chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -72,7 +75,11 @@ function mostrarGrafico(requisitos) {
                 },
                 {
                     label: 'Condiciones actuales',
-                    data: [9, 650, 62,], // Simulación de datos actuales
+                    data: [
+                        datosReales.luminosidad,
+                        datosReales.humedad,
+                        datosReales.temperatura
+                    ], // Reemplaza valores quemados con datos reales
                     backgroundColor: 'rgba(255, 99, 132, 0.8)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
@@ -88,7 +95,7 @@ function mostrarGrafico(requisitos) {
                     enabled: true,
                     callbacks: {
                         label: function(tooltipItem) {
-                            return ${tooltipItem.dataset.label}: ${tooltipItem.raw};
+                            return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
                         }
                     }
                 }
@@ -110,8 +117,4 @@ function mostrarGrafico(requisitos) {
             }
         }
     });
-}
-
-function monitorearCultivo() {
-    document.getElementById("monitoreoResultados").innerHTML = "<p>Monitoreo en proceso...</p>";
 }
