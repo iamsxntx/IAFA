@@ -89,7 +89,7 @@ async function render() {
         console.log("Temperatura obtenida en render:", data.temperatura);
 
         return {
-            luminosidad: data.luminosidad,
+            luminosidad: data.luz,
             humedad: data.humedad,
             temperatura: data.temperatura
         };
