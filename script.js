@@ -37,7 +37,7 @@ function analizarCultivo() {
 async function render() {
     try {
         console.log('Intentando obtener datos del servidor...');
-        const response = await fetch('https://iafa-h9tv.onrender.com/data');
+        const response = await fetch('https://iafa-h9tv.onrender.com/datos');
         console.log('Respuesta del servidor:', response);
 
         if (!response.ok) {
