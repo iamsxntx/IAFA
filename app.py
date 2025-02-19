@@ -1,10 +1,11 @@
 import os
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO
-from flask_cors import CORS
+from flask_cors import CORS  # Agrega esta línea
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")  # Habilita WebSockets con CORS
+CORS(app)  # Habilita CORS en toda la app
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 datos_sensores = {"temperatura": None, "humedad": None, "luz": None}
 
@@ -18,7 +19,6 @@ def recibir_datos():
     datos_sensores = request.json
     print("Datos recibidos:", datos_sensores)
     
-    # Enviar los datos a todos los clientes conectados en tiempo real
     socketio.emit('actualizar_datos', datos_sensores)
     
     return jsonify({"mensaje": "Datos recibidos correctamente"}), 200
