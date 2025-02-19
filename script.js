@@ -85,11 +85,8 @@ async function render() {
         const data = await response.json();
         console.log('Datos obtenidos:', data);
 
-        // Verifica que la temperatura se está obteniendo correctamente
-        console.log("Temperatura obtenida en render:", data.temperatura);
-
         return {
-            luminosidad: data.luz,
+            luminosidad: data.luz, // CORREGIDO: ahora usa la clave correcta
             humedad: data.humedad,
             temperatura: data.temperatura
         };
@@ -124,7 +121,7 @@ async function mostrarGrafico(requisitos) {
                 {
                     label: 'Requisitos del Cultivo',
                     data: [
-                        parseInt(requisitos.luminosidad),
+                        parseFloat(requisitos.luminosidad), // Mantenemos float
                         parseInt(requisitos.humedad),
                         parseInt(requisitos.temperatura)
                     ],
@@ -135,7 +132,7 @@ async function mostrarGrafico(requisitos) {
                 {
                     label: 'Condiciones Actuales',
                     data: [
-                        parseInt(data.luz),
+                        parseFloat(data.luminosidad), // CORREGIDO: ahora usa float
                         parseInt(data.humedad),
                         parseInt(data.temperatura)
                     ],
