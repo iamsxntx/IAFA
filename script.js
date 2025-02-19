@@ -34,20 +34,36 @@ function analizarCultivo() {
     mostrarGrafico(requisitos);
 }
 
-function mostrarGrafico(requisitos) {
-    const container = document.getElementById('graficoContainer');
+async function render() {
+    try {
+        const response = await fetch('https://iafa-h9tv.onrender.com/data');
+        const data = await response.json();
+        return {
+            luminosidad: data.luminosidad,
+            humedad: data.humedad,
+            temperatura: data.temperatura
+        };
+    } catch (error) {
+        console.error('Error al obtener datos del render:', error);
+        return {
+            luminosidad: 0,
+            humedad: 0,
+            temperatura: 0
+        };
+    }
+}
 
+async function mostrarGrafico(requisitos) {
+    const container = document.getElementById('graficoContainer');
     const oldCanvas = document.getElementById('graficoCondiciones');
     if (oldCanvas) {
         oldCanvas.remove();
     }
-
     const nuevoCanvas = document.createElement('canvas');
     nuevoCanvas.id = 'graficoCondiciones';
-    nuevoCanvas.width = 500; 
-    nuevoCanvas.height = 300; 
+    nuevoCanvas.width = 500;
+    nuevoCanvas.height = 300;
     container.appendChild(nuevoCanvas);
-
     const ctx = nuevoCanvas.getContext('2d');
 
     if (chart) {
@@ -55,7 +71,7 @@ function mostrarGrafico(requisitos) {
     }
 
     // Llamada a la función render para obtener datos reales de los sensores
-    const datosReales = render(); // Asegúrate de que 'render' devuelva un objeto con los datos necesarios
+    const datosReales = await render(); // Asegúrate de que 'render' devuelva un objeto con los datos necesarios
 
     chart = new Chart(ctx, {
         type: 'bar',
@@ -79,7 +95,7 @@ function mostrarGrafico(requisitos) {
                         datosReales.luminosidad,
                         datosReales.humedad,
                         datosReales.temperatura
-                    ], // Reemplaza valores quemados con datos reales
+                    ],
                     backgroundColor: 'rgba(255, 99, 132, 0.8)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
