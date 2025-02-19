@@ -27,6 +27,9 @@ async function obtenerDatos() {
         let datos = await response.json();
         console.log("Datos obtenidos:", datos);
 
+        // Verifica que la temperatura se está obteniendo correctamente
+        console.log("Temperatura obtenida:", datos.temperatura);
+
         // Actualiza los valores en la página
         document.getElementById("temp").innerText = datos.temperatura + "°C";
         document.getElementById("humedad").innerText = datos.humedad + "%";
@@ -49,7 +52,6 @@ function actualizarGrafico(datos) {
 
 // Llamar la función cuando el usuario haga clic en un botón
 document.getElementById("actualizar").addEventListener("click", obtenerDatos);
-
 
 function analizarCultivo() {
     const cultivo = document.getElementById("cultivo").value;
@@ -82,6 +84,9 @@ async function render() {
         
         const data = await response.json();
         console.log('Datos obtenidos:', data);
+
+        // Verifica que la temperatura se está obteniendo correctamente
+        console.log("Temperatura obtenida en render:", data.temperatura);
 
         return {
             luminosidad: data.luminosidad,
@@ -149,4 +154,3 @@ async function mostrarGrafico(requisitos) {
         }
     });
 }
-
