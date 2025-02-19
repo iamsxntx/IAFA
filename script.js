@@ -1,27 +1,24 @@
-const API_URL = "https://iafa-h9tv.onrender.com/datos";
-let chart;
-
-// Requisitos óptimos de cada cultivo
 const requisitosCultivos = {
-    mora: { luzMin: 6, luzMax: 8, humedadMin: 60, humedadMax: 70, tempMin: 15, tempMax: 25 },
-    lulo: { luzMin: 8, luzMax: 10, humedadMin: 70, humedadMax: 80, tempMin: 15, tempMax: 20 },
-    frijol: { luzMin: 6, luzMax: 8, humedadMin: 50, humedadMax: 60, tempMin: 20, tempMax: 30 },
-    cafe: { luzMin: 5, luzMax: 7, humedadMin: 70, humedadMax: 80, tempMin: 18, tempMax: 24 },
-    maiz: { luzMin: 10, luzMax: 12, humedadMin: 55, humedadMax: 75, tempMin: 20, tempMax: 30 },
-    arveja: { luzMin: 6, luzMax: 8, humedadMin: 50, humedadMax: 70, tempMin: 15, tempMax: 20 },
-    yuca: { luzMin: 8, luzMax: 10, humedadMin: 60, humedadMax: 70, tempMin: 25, tempMax: 30 },
-    auyama: { luzMin: 6, luzMax: 8, humedadMin: 60, humedadMax: 70, tempMin: 20, tempMax: 25 },
-    papa: { luzMin: 8, luzMax: 10, humedadMin: 70, humedadMax: 80, tempMin: 15, tempMax: 20 },
-    cebolla: { luzMin: 10, luzMax: 12, humedadMin: 60, humedadMax: 70, tempMin: 15, tempMax: 20 },
-    tomate: { luzMin: 8, luzMax: 10, humedadMin: 60, humedadMax: 70, tempMin: 20, tempMax: 25 },
-    naranjas: { luzMin: 8, luzMax: 10, humedadMin: 50, humedadMax: 60, tempMin: 25, tempMax: 30 },
+    mora: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "15-25°C" },
+    lulo: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
+    frijol: { luminosidad: "6-8 horas", humedad: "50-60%", temperatura: "20-30°C" },
+    cafe: { luminosidad: "5-7 horas", humedad: "70-80%", temperatura: "18-24°C" },
+    maiz: { luminosidad: "10-12 horas", humedad: "55-75%", temperatura: "20-30°C" },
+    arveja: { luminosidad: "6-8 horas", humedad: "50-70%", temperatura: "15-20°C" },
+    yuca: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "25-30°C" },
+    auyama: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "20-25°C" },
+    papa: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
+    cebolla: { luminosidad: "10-12 horas", humedad: "60-70%", temperatura: "15-20°C" },
+    tomate: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "20-25°C" },
+    naranjas: { luminosidad: "8-10 horas", humedad: "50-60%", temperatura: "25-30°C" },
 };
 
-// Función para obtener datos del servidor
+let chart;
+
 async function obtenerDatos() {
     try {
         console.log("Intentando obtener datos del servidor...");
-        let response = await fetch(API_URL);
+        let response = await fetch("https://iafa-h9tv.onrender.com/datos");
 
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
@@ -33,86 +30,123 @@ async function obtenerDatos() {
         // Actualiza los valores en la página
         document.getElementById("temp").innerText = datos.temperatura + "°C";
         document.getElementById("humedad").innerText = datos.humedad + "%";
-        document.getElementById("luz").innerText = datos.luz + " horas";
+        document.getElementById("luz").innerText = datos.luz;
 
-        // Actualiza el gráfico
+        // También actualiza el gráfico
         actualizarGrafico(datos);
-
-        // Analiza el cultivo seleccionado
-        analizarCultivo(datos);
 
     } catch (error) {
         console.error("Error al obtener datos del servidor:", error);
     }
 }
 
-// Función para analizar el cultivo y mostrar recomendaciones
-function analizarCultivo(datos) {
-    const cultivo = document.getElementById("cultivo").value;
-    const requisitos = requisitosCultivos[cultivo];
-
-    let recomendaciones = [];
-
-    if (datos.temperatura < requisitos.tempMin) {
-        recomendaciones.push("Hace mucho frío para el cultivo.");
-    } else if (datos.temperatura > requisitos.tempMax) {
-        recomendaciones.push("Hace demasiado calor para el cultivo.");
+function actualizarGrafico(datos) {
+    if (chart) {
+        chart.data.datasets[1].data = [datos.luz, datos.humedad, datos.temperatura];
+        chart.update();
     }
-
-    if (datos.humedad < requisitos.humedadMin) {
-        recomendaciones.push("Falta agua, regar.");
-    } else if (datos.humedad > requisitos.humedadMax) {
-        recomendaciones.push("Exceso de humedad, reducir riego.");
-    }
-
-    if (datos.luz < requisitos.luzMin) {
-        recomendaciones.push("Poca luz, asegure más exposición solar.");
-    } else if (datos.luz > requisitos.luzMax) {
-        recomendaciones.push("Demasiada luz, posible estrés en la planta.");
-    }
-
-    document.getElementById("recomendacion").innerText = recomendaciones.length > 0
-        ? recomendaciones.join(" ")
-        : "Las condiciones son óptimas.";
 }
 
-// Función para inicializar el gráfico
-function inicializarGrafico() {
-    const ctx = document.getElementById("graficoCondiciones").getContext("2d");
+// Llamar la función cuando el usuario haga clic en un botón
+document.getElementById("actualizar").addEventListener("click", obtenerDatos);
+
+
+function analizarCultivo() {
+    const cultivo = document.getElementById("cultivo").value;
+    const resultadosDiv = document.getElementById("resultados");
+
+    const requisitos = requisitosCultivos[cultivo];
+
+    resultadosDiv.innerHTML = `
+        <h3>Requisitos para cultivar ${cultivo.charAt(0).toUpperCase() + cultivo.slice(1)}:</h3>
+        <ul>
+            <li><strong>Luminosidad:</strong> ${requisitos.luminosidad}</li>
+            <li><strong>Humedad:</strong> ${requisitos.humedad}</li>
+            <li><strong>Temperatura:</strong> ${requisitos.temperatura}</li>
+        </ul>
+        <p>¡Verifica si las condiciones de tu suelo son adecuadas!</p>
+    `;
+
+    mostrarGrafico(requisitos);
+}
+
+async function render() {
+    try {
+        console.log('Intentando obtener datos del servidor...');
+        const response = await fetch('https://iafa-h9tv.onrender.com/datos');
+        console.log('Respuesta del servidor:', response);
+
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        
+        const data = await response.json();
+        console.log('Datos obtenidos:', data);
+
+        return {
+            luminosidad: data.luminosidad,
+            humedad: data.humedad,
+            temperatura: data.temperatura
+        };
+    } catch (error) {
+        console.error('Error al obtener datos del render:', error);
+        return {
+            luminosidad: 0,
+            humedad: 0,
+            temperatura: 0
+        };
+    }
+}
+
+async function mostrarGrafico(requisitos) {
+    const container = document.getElementById("graficoContainer");
+
+    const data = await render();
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    const ctx = document.createElement("canvas");
+    container.innerHTML = '';
+    container.appendChild(ctx);
 
     chart = new Chart(ctx, {
-        type: "bar",
+        type: 'bar',
         data: {
-            labels: ["Luz (horas)", "Humedad (%)", "Temperatura (°C)"],
+            labels: ['Luminosidad', 'Humedad', 'Temperatura'],
             datasets: [
                 {
-                    label: "Condiciones Actuales",
-                    data: [0, 0, 0],
-                    backgroundColor: ["rgba(255, 99, 132, 0.8)", "rgba(54, 162, 235, 0.8)", "rgba(255, 206, 86, 0.8)"],
-                    borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)"],
+                    label: 'Requisitos del Cultivo',
+                    data: [
+                        parseInt(requisitos.luminosidad),
+                        parseInt(requisitos.humedad),
+                        parseInt(requisitos.temperatura)
+                    ],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Condiciones Actuales',
+                    data: [
+                        parseInt(data.luminosidad),
+                        parseInt(data.humedad),
+                        parseInt(data.temperatura)
+                    ],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 }
             ]
         },
         options: {
-            responsive: true,
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true
+                }
             }
         }
     });
 }
 
-// Función para actualizar los datos en el gráfico
-function actualizarGrafico(datos) {
-    if (chart) {
-        chart.data.datasets[0].data = [datos.luz, datos.humedad, datos.temperatura];
-        chart.update();
-    }
-}
-
-// Inicializa el gráfico al cargar la página
-document.addEventListener("DOMContentLoaded", inicializarGrafico);
-
-// Asigna la función al botón para actualizar los datos al hacer clic
-document.getElementById("actualizar").addEventListener("click", obtenerDatos);
