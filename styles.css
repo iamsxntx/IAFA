@@ -1,0 +1,99 @@
+/* Estilos generales */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #e9f8e9;
+  color: #333;
+  text-align: center;
+}
+
+/* Widget del Clima */
+#clima-widget {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  width: 280%; /* Ajusta el ancho */
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.weather-card {
+  width: 100%;
+  max-width: 1500px;
+  background: linear-gradient(135deg, #4caf50, #81c784);
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+
+.weather-card:hover {
+  transform: scale(1.05);
+}
+
+.weather-card img {
+  width: 80px;
+  height: 80px;
+  margin: 10px 0;
+}
+
+.temp {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.desc {
+  font-style: italic;
+}
+
+.error-msg {
+  color: red;
+  font-weight: bold;
+}
+
+.loading {
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.forecast-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.forecast-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  width: 120px;
+  max-width: 150px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.forecast-card img {
+  width: 100px;
+  height: 100px;
+}
+
+#pronostico {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 480px) {
+  #clima-widget {
+    width: 90%;
+    padding: 15px;
+  }
+}
