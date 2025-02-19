@@ -31,7 +31,6 @@ body {
   text-align: center;
 }
 
-
 .weather-card:hover {
   transform: scale(1.05);
 }
@@ -95,5 +94,16 @@ body {
   #clima-widget {
     width: 90%;
     padding: 15px;
+  }
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-item {
+    margin-bottom: 10px;
   }
 }
