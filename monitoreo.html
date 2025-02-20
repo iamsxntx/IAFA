@@ -92,8 +92,22 @@
         <p>&copy; 2025 ColSeed by David Leon - Julian Marin</p>
     </footer>
 
-    <script src="script.js"></script>
     <script>
+        const requisitosCultivos = {
+            mora: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "15-25°C" },
+            lulo: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
+            frijol: { luminosidad: "6-8 horas", humedad: "50-60%", temperatura: "20-30°C" },
+            cafe: { luminosidad: "5-7 horas", humedad: "70-80%", temperatura: "18-24°C" },
+            maiz: { luminosidad: "10-12 horas", humedad: "55-75%", temperatura: "20-30°C" },
+            arveja: { luminosidad: "6-8 horas", humedad: "50-70%", temperatura: "15-20°C" },
+            yuca: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "25-30°C" },
+            auyama: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "20-25°C" },
+            papa: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
+            cebolla: { luminosidad: "10-12 horas", humedad: "60-70%", temperatura: "15-20°C" },
+            tomate: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "20-25°C" },
+            naranjas: { luminosidad: "8-10 horas", humedad: "50-60%", temperatura: "25-30°C" }
+        };
+
         document.getElementById("btnAnalizar").addEventListener("click", analizarCultivo);
 
         async function analizarCultivo() {
@@ -110,6 +124,7 @@
 
                 const data = await response.json();
                 const { temperatura, humedad, luz } = data;
+                const requisitos = requisitosCultivos[cultivo];
 
                 resultadosDiv.innerHTML = `
                     <div class="card temp"><h3>🌡 Temperatura</h3><p>${temperatura} °C</p></div>
@@ -118,16 +133,23 @@
                 `;
 
                 let mensaje = "";
-                if (temperatura > 30) mensaje += "⚠️ Temperatura elevada, riesgo de estrés térmico. ";
-                if (temperatura < 5) mensaje += "☢️ Temperatura muy baja, riesgo de daño vegetal. ";
-                if (temperatura > 25 && temperatura <= 30) mensaje += "⚠️ Temperatura elevada, aumentar riego si es necesario. ";
+                if (temperatura < parseFloat(requisitos.temperatura.split('-')[0])) {
+                    mensaje += "☢️ Temperatura muy baja, riesgo de daño vegetal. ";
+                } else if (temperatura > parseFloat(requisitos.temperatura.split('-')[1])) {
+                    mensaje += "⚠️ Temperatura elevada, riesgo de estrés térmico. ";
+                }
 
-                if (humedad < 70) mensaje += "⚠️ Humedad baja, riesgo de sequía. ";
-                if (humedad > 90) mensaje += "⚠️ Humedad excesiva, riesgo de hongos y enfermedades. ";
+                if (humedad < parseInt(requisitos.humedad.split('-')[0])) {
+                    mensaje += "⚠️ Humedad baja, riesgo de sequía. ";
+                } else if (humedad > parseInt(requisitos.humedad.split('-')[1])) {
+                    mensaje += "⚠️ Humedad excesiva, riesgo de hongos y enfermedades. ";
+                }
 
-                if (luz > 50000) mensaje += "⚠️ Luz excesiva, posible deshidratación. ";
-                if (luz < 200) mensaje += "☢️ Luz insuficiente, posible debilitación de la planta y crecimiento deficiente. ";
-                if (luz > 200 && luz < 1000) mensaje += "⚠️ Luz baja, puede afectar el crecimiento. ";
+                if (luz < parseInt(requisitos.luminosidad.split('-')[0])) {
+                    mensaje += "☢️ Luz insuficiente, posible debilitación de la planta y crecimiento deficiente. ";
+                } else if (luz > parseInt(requisitos.luminosidad.split('-')[1])) {
+                    mensaje += "⚠️ Luz excesiva, posible deshidratación. ";
+                }
 
                 alertaDiv.innerHTML = mensaje;
 
