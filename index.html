@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ColSeed</title>
@@ -8,6 +9,14 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+    <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => console.log("Service Worker registrado", reg))
+    .catch(err => console.error("Error registrando Service Worker", err));
+}
+</script>
+
 <body>
     <header class="bg-success text-white text-center py-4">
         <h1>COLSEED</h1>
