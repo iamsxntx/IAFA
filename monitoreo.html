@@ -110,18 +110,11 @@
 
                 const data = await response.json();
                 const { temperatura, humedad, luz } = data;
-                const requisitos = requisitosCultivos[cultivo];
 
                 resultadosDiv.innerHTML = `
                     <div class="card temp"><h3>🌡 Temperatura</h3><p>${temperatura} °C</p></div>
                     <div class="card hum"><h3>💧 Humedad</h3><p>${humedad} %</p></div>
                     <div class="card luz"><h3>☀️ Luz</h3><p>${luz} lux</p></div>
-                    <div><h3>Requisitos para cultivar ${cultivo.charAt(0).toUpperCase() + cultivo.slice(1)}:</h3></div>
-                    <ul>
-                        <li><strong>Luminosidad:</strong> ${requisitos.luminosidad}</li>
-                        <li><strong>Humedad:</strong> ${requisitos.humedad}</li>
-                        <li><strong>Temperatura:</strong> ${requisitos.temperatura}</li>
-                    </ul>
                 `;
 
                 let mensaje = "";
