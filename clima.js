@@ -8,12 +8,156 @@ const buscarClimaButton = document.getElementById('buscar-clima');
 const climaActualDiv = document.getElementById('clima-actual');
 
 const departamentos = {
-    CO: ['Antioquia', 'Cundinamarca', 'Valle del Cauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'],
-    PE: ['Lima', 'Arequipa', 'Cusco', 'Amazonas', 'Áncash', 'Apurímac', 'Ayacucho', 'Cajamarca', 'Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'],
-    EC: ['Pichincha', 'Guayas', 'Manabí', 'Azuay', 'Bolívar', 'Cañar', 'Carchi', 'Chimborazo', 'Cotopaxi', 'El Oro', 'Esmeraldas', 'Galápagos', 'Imbabura', 'Loja', 'Los Ríos', 'Morona Santiago', 'Napo', 'Orellana', 'Pastaza', 'Santa Elena', 'Santo Domingo de los Tsáchilas', 'Sucumbíos', 'Tungurahua', 'Zamora Chinchipe'],
-    MX: ['Ciudad de México', 'Jalisco', 'Nuevo León', 'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Durango', 'Estado de México', 'Guanajuato', 'Guerrero', 'Hidalgo', 'Michoacán', 'Morelos', 'Nayarit', 'Oaxaca', 'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'],
-    ES: ['Madrid', 'Cataluña', 'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias', 'Cantabria', 'Castilla y León', 'Castilla-La Mancha', 'Extremadura', 'Galicia', 'La Rioja', 'Murcia', 'Navarra', 'País Vasco', 'Valencia'],
-    BO: ['La Paz', 'Cochabamba', 'Santa Cruz', 'Oruro', 'Potosí', 'Tarija', 'Chuquisaca', 'Beni', 'Pando']
+    CO: [
+        { nombre: 'Antioquia', ciudad: 'Medellín' },
+        { nombre: 'Cundinamarca', ciudad: 'Bogotá' },
+        { nombre: 'Valle del Cauca', ciudad: 'Cali' },
+        { nombre: 'Atlántico', ciudad: 'Barranquilla' },
+        { nombre: 'Bolívar', ciudad: 'Cartagena' },
+        { nombre: 'Boyacá', ciudad: 'Tunja' },
+        { nombre: 'Caldas', ciudad: 'Manizales' },
+        { nombre: 'Caquetá', ciudad: 'Florencia' },
+        { nombre: 'Casanare', ciudad: 'Yopal' },
+        { nombre: 'Cauca', ciudad: 'Popayán' },
+        { nombre: 'Cesar', ciudad: 'Valledupar' },
+        { nombre: 'Chocó', ciudad: 'Quibdó' },
+        { nombre: 'Córdoba', ciudad: 'Montería' },
+        { nombre: 'Guainía', ciudad: 'Inírida' },
+        { nombre: 'Guaviare', ciudad: 'San José del Guaviare' },
+        { nombre: 'Huila', ciudad: 'Neiva' },
+        { nombre: 'La Guajira', ciudad: 'Riohacha' },
+        { nombre: 'Magdalena', ciudad: 'Santa Marta' },
+        { nombre: 'Meta', ciudad: 'Villavicencio' },
+        { nombre: 'Nariño', ciudad: 'Pasto' },
+        { nombre: 'Norte de Santander', ciudad: 'Cúcuta' },
+        { nombre: 'Putumayo', ciudad: 'Mocoa' },
+        { nombre: 'Quindío', ciudad: 'Armenia' },
+        { nombre: 'Risaralda', ciudad: 'Pereira' },
+        { nombre: 'San Andrés y Providencia', ciudad: 'San Andrés' },
+        { nombre: 'Santander', ciudad: 'Bucaramanga' },
+        { nombre: 'Sucre', ciudad: 'Sincelejo' },
+        { nombre: 'Tolima', ciudad: 'Ibagué' },
+        { nombre: 'Valle del Cauca', ciudad: 'Cali' },
+        { nombre: 'Vaupés', ciudad: 'Mitú' },
+        { nombre: 'Vichada', ciudad: 'Puerto Carreño' }
+    ],
+    PE: [
+        { nombre: 'Lima', ciudad: 'Lima' },
+        { nombre: 'Arequipa', ciudad: 'Arequipa' },
+        { nombre: 'Cusco', ciudad: 'Cusco' },
+        { nombre: 'Amazonas', ciudad: 'Chachapoyas' },
+        { nombre: 'Áncash', ciudad: 'Huaraz' },
+        { nombre: 'Apurímac', ciudad: 'Abancay' },
+        { nombre: 'Ayacucho', ciudad: 'Ayacucho' },
+        { nombre: 'Cajamarca', ciudad: 'Cajamarca' },
+        { nombre: 'Callao', ciudad: 'Callao' },
+        { nombre: 'Huancavelica', ciudad: 'Huancavelica' },
+        { nombre: 'Huánuco', ciudad: 'Huánuco' },
+        { nombre: 'Ica', ciudad: 'Ica' },
+        { nombre: 'Junín', ciudad: 'Huancayo' },
+        { nombre: 'La Libertad', ciudad: 'Trujillo' },
+        { nombre: 'Lambayeque', ciudad: 'Chiclayo' },
+        { nombre: 'Loreto', ciudad: 'Iquitos' },
+        { nombre: 'Madre de Dios', ciudad: 'Puerto Maldonado' },
+        { nombre: 'Moquegua', ciudad: 'Moquegua' },
+        { nombre: 'Pasco', ciudad: 'Cerro de Pasco' },
+        { nombre: 'Piura', ciudad: 'Piura' },
+        { nombre: 'Puno', ciudad: 'Puno' },
+        { nombre: 'San Martín', ciudad: 'Moyobamba' },
+        { nombre: 'Tacna', ciudad: 'Tacna' },
+        { nombre: 'Tumbes', ciudad: 'Tumbes' },
+        { nombre: 'Ucayali', ciudad: 'Pucallpa' }
+    ],
+    EC: [
+        { nombre: 'Pichincha', ciudad: 'Quito' },
+        { nombre: 'Guayas', ciudad: 'Guayaquil' },
+        { nombre: 'Manabí', ciudad: 'Portoviejo' },
+        { nombre: 'Azuay', ciudad: 'Cuenca' },
+        { nombre: 'Bolívar', ciudad: 'Guaranda' },
+        { nombre: 'Cañar', ciudad: 'Azogues' },
+        { nombre: 'Carchi', ciudad: 'Tulcán' },
+        { nombre: 'Chimborazo', ciudad: 'Riobamba' },
+        { nombre: 'Cotopaxi', ciudad: 'Latacunga' },
+        { nombre: 'El Oro', ciudad: 'Machala' },
+        { nombre: 'Esmeraldas', ciudad: 'Esmeraldas' },
+        { nombre: 'Galápagos', ciudad: 'Puerto Baquerizo Moreno' },
+        { nombre: 'Imbabura', ciudad: 'Ibarra' },
+        { nombre: 'Loja', ciudad: 'Loja' },
+        { nombre: 'Los Ríos', ciudad: 'Babahoyo' },
+        { nombre: 'Morona Santiago', ciudad: 'Macas' },
+        { nombre: 'Napo', ciudad: 'Tena' },
+        { nombre: 'Orellana', ciudad: 'Francisco de Orellana' },
+        { nombre: 'Pastaza', ciudad: 'Puyo' },
+        { nombre: 'Santa Elena', ciudad: 'La Libertad' },
+        { nombre: 'Santo Domingo de los Tsáchilas', ciudad: 'Santo Domingo' },
+        { nombre: 'Sucumbíos', ciudad: 'Nueva Loja' },
+        { nombre: 'Tungurahua', ciudad: 'Ambato' },
+        { nombre: 'Zamora Chinchipe', ciudad: 'Zamora' }
+    ],
+    MX: [
+        { nombre: 'Ciudad de México', ciudad: 'Ciudad de México' },
+        { nombre: 'Jalisco', ciudad: 'Guadalajara' },
+        { nombre: 'Nuevo León', ciudad: 'Monterrey' },
+        { nombre: 'Aguascalientes', ciudad: 'Aguascalientes' },
+        { nombre: 'Baja California', ciudad: 'Mexicali' },
+        { nombre: 'Baja California Sur', ciudad: 'La Paz' },
+        { nombre: 'Campeche', ciudad: 'San Francisco de Campeche' },
+        { nombre: 'Chiapas', ciudad: 'Tuxtla Gutiérrez' },
+        { nombre: 'Chihuahua', ciudad: 'Chihuahua' },
+        { nombre: 'Coahuila', ciudad: 'Saltillo' },
+        { nombre: 'Colima', ciudad: 'Colima' },
+        { nombre: 'Durango', ciudad: 'Durango' },
+        { nombre: 'Estado de México', ciudad: 'Toluca' },
+        { nombre: 'Guanajuato', ciudad: 'Guanajuato' },
+        { nombre: 'Guerrero', ciudad: 'Chilpancingo' },
+        { nombre: 'Hidalgo', ciudad: 'Pachuca' },
+        { nombre: 'Michoacán', ciudad: 'Morelia' },
+        { nombre: 'Morelos', ciudad: 'Cuernavaca' },
+        { nombre: 'Nayarit', ciudad: 'Tepic' },
+        { nombre: 'Oaxaca', ciudad: 'Oaxaca' },
+        { nombre: 'Puebla', ciudad: 'Puebla' },
+        { nombre: 'Querétaro', ciudad: 'Querétaro' },
+        { nombre: 'Quintana Roo', ciudad: 'Chetumal' },
+        { nombre: 'San Luis Potosí', ciudad: 'San Luis Potosí' },
+        { nombre: 'Sinaloa', ciudad: 'Culiacán' },
+        { nombre: 'Sonora', ciudad: 'Hermosillo' },
+        { nombre: 'Tabasco', ciudad: 'Villahermosa' },
+        { nombre: 'Tamaulipas', ciudad: 'Ciudad Victoria' },
+        { nombre: 'Tlaxcala', ciudad: 'Tlaxcala' },
+        { nombre: 'Veracruz', ciudad: 'Xalapa' },
+        { nombre: 'Yucatán', ciudad: 'Mérida' },
+        { nombre: 'Zacatecas', ciudad: 'Zacatecas' }
+    ],
+    ES: [
+        { nombre: 'Madrid', ciudad: 'Madrid' },
+        { nombre: 'Cataluña', ciudad: 'Barcelona' },
+        { nombre: 'Andalucía', ciudad: 'Sevilla' },
+        { nombre: 'Aragón', ciudad: 'Zaragoza' },
+        { nombre: 'Asturias', ciudad: 'Oviedo' },
+        { nombre: 'Baleares', ciudad: 'Palma' },
+        { nombre: 'Canarias', ciudad: 'Las Palmas' },
+        { nombre: 'Cantabria', ciudad: 'Santander' },
+        { nombre: 'Castilla y León', ciudad: 'Valladolid' },
+        { nombre: 'Castilla-La Mancha', ciudad: 'Toledo' },
+        { nombre: 'Extremadura', ciudad: 'Mérida' },
+        { nombre: 'Galicia', ciudad: 'Santiago de Compostela' },
+        { nombre: 'La Rioja', ciudad: 'Logroño' },
+        { nombre: 'Murcia', ciudad: 'Murcia' },
+        { nombre: 'Navarra', ciudad: 'Pamplona' },
+        { nombre: 'País Vasco', ciudad: 'Vitoria' },
+        { nombre: 'Valencia', ciudad: 'Valencia' }
+    ],
+    BO: [
+        { nombre: 'La Paz', ciudad: 'La Paz' },
+        { nombre: 'Cochabamba', ciudad: 'Cochabamba' },
+        { nombre: 'Santa Cruz', ciudad: 'Santa Cruz' },
+        { nombre: 'Oruro', ciudad: 'Oruro' },
+        { nombre: 'Potosí', ciudad: 'Potosí' },
+        { nombre: 'Tarija', ciudad: 'Tarija' },
+        { nombre: 'Chuquisaca', ciudad: 'Sucre' },
+        { nombre: 'Beni', ciudad: 'Trinidad' },
+        { nombre: 'Pando', ciudad: 'Cobija' }
+    ]
 };
 
 paisSelect.addEventListener('change', function() {
@@ -23,8 +167,8 @@ paisSelect.addEventListener('change', function() {
     if (departamentos[pais]) {
         departamentos[pais].forEach(function(departamento) {
             const option = document.createElement('option');
-            option.value = departamento;
-            option.textContent = departamento;
+            option.value = departamento.nombre;
+            option.textContent = `${departamento.nombre} (${departamento.ciudad})`;
             departamentoSelect.appendChild(option);
         });
     }
@@ -45,8 +189,11 @@ function buscarClima() {
     climaActualDiv.innerHTML = '<p class="loading">Cargando...</p>';
     document.getElementById("pronostico").innerHTML = ""; // Limpia el pronóstico anterior
 
-    const urlClima = `${apiEndpoint}weather?q=${ubicacion},${departamento},${pais}&units=metric&appid=${apiKey}&lang=es`;
-    const urlForecast = `${apiEndpoint}forecast?q=${ubicacion},${departamento},${pais}&units=metric&appid=${apiKey}&lang=es`;
+    const departamentoData = departamentos[pais].find(d => d.nombre === departamento);
+    const ciudad = departamentoData ? departamentoData.ciudad : '';
+
+    const urlClima = `${apiEndpoint}weather?q=${ubicacion},${ciudad},${pais}&units=metric&appid=${apiKey}&lang=es`;
+    const urlForecast = `${apiEndpoint}forecast?q=${ubicacion},${ciudad},${pais}&units=metric&appid=${apiKey}&lang=es`;
 
     fetch(urlClima)
         .then(response => {
