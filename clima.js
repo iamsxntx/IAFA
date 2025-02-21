@@ -1,15 +1,41 @@
-const apiEndpoint = 'https://api.openweathermap.org/data/2.5/';
+ const apiEndpoint = 'https://api.openweathermap.org/data/2.5/';
 const apiKey = 'a6c70ff6ee453d0222a396af6c64552f';
 
 const ubicacionInput = document.getElementById('ubicacion');
 const paisSelect = document.getElementById('pais');
+const departamentoSelect = document.getElementById('departamento');
 const buscarClimaButton = document.getElementById('buscar-clima');
 const climaActualDiv = document.getElementById('clima-actual');
+
+const departamentos = {
+    CO: ['Antioquia', 'Cundinamarca', 'Valle del Cauca'],
+    PE: ['Lima', 'Arequipa', 'Cusco'],
+    EC: ['Pichincha', 'Guayas', 'Manabí'],
+    MX: ['Ciudad de México', 'Jalisco', 'Nuevo León'],
+    ES: ['Madrid', 'Cataluña', 'Andalucía']
+};
+
+paisSelect.addEventListener('change', function() {
+    const pais = this.value;
+    departamentoSelect.innerHTML = '<option value="">Seleccione un departamento</option>';
+
+    if (departamentos[pais]) {
+        departamentos[pais].forEach(function(departamento) {
+            const option = document.createElement('option');
+            option.value = departamento;
+            option.textContent = departamento;
+            departamentoSelect.appendChild(option);
+        });
+    }
+});
 
 buscarClimaButton.addEventListener('click', buscarClima);
 
 function buscarClima() {
     const ubicacion = ubicacionInput.value.trim();
+    const pais = paisSelect.value;
+    const departamento = departamentoSelect.value;
+    
     if (!ubicacion) {
         climaActualDiv.innerHTML = '<p class="error-msg">Por favor, ingresa una ciudad válida.</p>';
         return;
@@ -18,9 +44,8 @@ function buscarClima() {
     climaActualDiv.innerHTML = '<p class="loading">Cargando...</p>';
     document.getElementById("pronostico").innerHTML = ""; // Limpia el pronóstico anterior
 
-    const pais = paisSelect.value;
-    const urlClima = `${apiEndpoint}weather?q=${ubicacion},${pais}&units=metric&appid=${apiKey}&lang=es`;
-    const urlForecast = `${apiEndpoint}forecast?q=${ubicacion},${pais}&units=metric&appid=${apiKey}&lang=es`;
+    const urlClima = `${apiEndpoint}weather?q=${ubicacion},${departamento},${pais}&units=metric&appid=${apiKey}&lang=es`;
+    const urlForecast = `${apiEndpoint}forecast?q=${ubicacion},${departamento},${pais}&units=metric&appid=${apiKey}&lang=es`;
 
     fetch(urlClima)
         .then(response => {
@@ -29,7 +54,7 @@ function buscarClima() {
         })
         .then(data => {
             mostrarClimaActual(data);
-            actualizarReloj(data.timezone); // 🔥 MOVIDO AQUÍ
+            actualizarReloj(data.timezone);
         })
         .catch(error => {
             climaActualDiv.innerHTML = '<p class="error-msg">No se pudo obtener la información del clima.</p>';
@@ -51,7 +76,6 @@ function mostrarClimaActual(data) {
         return;
     }
 
-    // 🔥 Ahora sí podemos actualizar el nombre de la ciudad aquí
     document.getElementById("ciudad").innerText = `${data.name}, ${data.sys.country}`;
 
     const timestamp = data.dt * 1000;
@@ -64,7 +88,6 @@ function mostrarClimaActual(data) {
     const condiciones = data.weather[0].description;
     const icono = data.weather[0].icon;
     const iconUrl = `http://openweathermap.org/img/w/${icono}.png`;
-
 
     const sunriseTime = new Date(data.sys.sunrise * 1000).toLocaleTimeString("es-ES");
     const sunsetTime = new Date(data.sys.sunset * 1000).toLocaleTimeString("es-ES");
@@ -81,17 +104,17 @@ function mostrarClimaActual(data) {
             <p>🌅 Amanecer: <strong>${sunriseTime}</strong></p>
             <p>🌄 Atardecer: <strong>${sunsetTime}</strong></p>
             <p class="desc">${condiciones.charAt(0).toUpperCase() + condiciones.slice(1)}</p>
-            <p id="reloj">🕒 Cargando hora...</p> <!-- 🔥 Aquí aparecerá la hora -->
+            <p id="reloj">🕒 Cargando hora...</p>
         </div>
     `;
 }
 
 function obtenerPrediccion(data) {
-    let pronosticoPorDia = {}; // Objeto para almacenar datos por día
+    let pronosticoPorDia = {};
 
     data.list.forEach(item => {
         const fecha = new Date(item.dt * 1000);
-        const dia = fecha.toLocaleDateString("es-ES", { weekday: "long" }); // Día en español
+        const dia = fecha.toLocaleDateString("es-ES", { weekday: "long" });
 
         if (!pronosticoPorDia[dia]) {
             pronosticoPorDia[dia] = {
@@ -108,6 +131,7 @@ function obtenerPrediccion(data) {
 
     mostrarPrediccion(pronosticoPorDia);
 }
+
 function mostrarPrediccion(pronostico) {
     let html = "<h3>Pronóstico para los próximos días:</h3><div class='forecast-container'>";
 
@@ -145,6 +169,7 @@ function obtenerUbicacion() {
         alert("Tu navegador no admite geolocalización.");
     }
 }
+
 function actualizarReloj(timezone) {
     function mostrarHora() {
         const ahora = new Date();
@@ -152,6 +177,6 @@ function actualizarReloj(timezone) {
         const horaLocal = new Date(utc + (timezone * 1000));
         document.getElementById("reloj").innerText = `🕒 Hora local: ${horaLocal.toLocaleTimeString()}`;
     }
-    mostrarHora(); // Muestra la hora inmediatamente
-    setInterval(mostrarHora, 1000); // Actualiza cada segundo
+    mostrarHora();
+    setInterval(mostrarHora, 1000);
 }
