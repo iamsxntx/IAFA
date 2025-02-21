@@ -8,11 +8,12 @@ const buscarClimaButton = document.getElementById('buscar-clima');
 const climaActualDiv = document.getElementById('clima-actual');
 
 const departamentos = {
-    CO: ['Antioquia', 'Cundinamarca', 'Valle del Cauca'],
-    PE: ['Lima', 'Arequipa', 'Cusco'],
-    EC: ['Pichincha', 'Guayas', 'Manabí'],
-    MX: ['Ciudad de México', 'Jalisco', 'Nuevo León'],
-    ES: ['Madrid', 'Cataluña', 'Andalucía']
+    CO: ['Antioquia', 'Cundinamarca', 'Valle del Cauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'],
+    PE: ['Lima', 'Arequipa', 'Cusco', 'Amazonas', 'Áncash', 'Apurímac', 'Ayacucho', 'Cajamarca', 'Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'],
+    EC: ['Pichincha', 'Guayas', 'Manabí', 'Azuay', 'Bolívar', 'Cañar', 'Carchi', 'Chimborazo', 'Cotopaxi', 'El Oro', 'Esmeraldas', 'Galápagos', 'Imbabura', 'Loja', 'Los Ríos', 'Morona Santiago', 'Napo', 'Orellana', 'Pastaza', 'Santa Elena', 'Santo Domingo de los Tsáchilas', 'Sucumbíos', 'Tungurahua', 'Zamora Chinchipe'],
+    MX: ['Ciudad de México', 'Jalisco', 'Nuevo León', 'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Durango', 'Estado de México', 'Guanajuato', 'Guerrero', 'Hidalgo', 'Michoacán', 'Morelos', 'Nayarit', 'Oaxaca', 'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'],
+    ES: ['Madrid', 'Cataluña', 'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias', 'Cantabria', 'Castilla y León', 'Castilla-La Mancha', 'Extremadura', 'Galicia', 'La Rioja', 'Murcia', 'Navarra', 'País Vasco', 'Valencia'],
+    BO: ['La Paz', 'Cochabamba', 'Santa Cruz', 'Oruro', 'Potosí', 'Tarija', 'Chuquisaca', 'Beni', 'Pando']
 };
 
 paisSelect.addEventListener('change', function() {
