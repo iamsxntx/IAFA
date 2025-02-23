@@ -1,13 +1,13 @@
 import os
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO
-from flask_cors import CORS  # Agrega esta línea
+from flask_cors import CORS  
 
 app = Flask(__name__)
 CORS(app)  # Habilita CORS en toda la app
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-datos_sensores = {"temperatura": None, "humedad": None, "luz": None}
+datos_sensores = {"temperatura": None, "humedad_ambiente": None, "humedad_suelo": None, "luz": None}
 
 @app.route('/')
 def home():
