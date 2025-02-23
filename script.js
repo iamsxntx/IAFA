@@ -1,16 +1,16 @@
 const requisitosCultivos = {
-    mora: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "15-25°C" },
-    lulo: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
-    frijol: { luminosidad: "6-8 horas", humedad: "50-60%", temperatura: "20-30°C" },
-    cafe: { luminosidad: "5-7 horas", humedad: "70-80%", temperatura: "18-24°C" },
-    maiz: { luminosidad: "10-12 horas", humedad: "55-75%", temperatura: "20-30°C" },
-    arveja: { luminosidad: "6-8 horas", humedad: "50-70%", temperatura: "15-20°C" },
-    yuca: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "25-30°C" },
-    auyama: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "20-25°C" },
-    papa: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
-    cebolla: { luminosidad: "10-12 horas", humedad: "60-70%", temperatura: "15-20°C" },
-    tomate: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "20-25°C" },
-    naranjas: { luminosidad: "8-10 horas", humedad: "50-60%", temperatura: "25-30°C" },
+     mora: { luminosidad: "6-8 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "15-25°C" },
+    lulo: { luminosidad: "8-10 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "15-20°C" },
+    frijol: { luminosidad: "6-8 horas", humedad_ambiente: "50-60%", humedad_suelo: "40-50%", temperatura: "20-30°C" },
+    cafe: { luminosidad: "5-7 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "18-24°C" },
+    maiz: { luminosidad: "10-12 horas", humedad_ambiente: "55-75%", humedad_suelo: "50-60%", temperatura: "20-30°C" },
+    arveja: { luminosidad: "6-8 horas", humedad_ambiente: "50-70%", humedad_suelo: "40-50%", temperatura: "15-20°C" },
+    yuca: { luminosidad: "8-10 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "25-30°C" },
+    auyama: { luminosidad: "6-8 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "20-25°C" },
+    papa: { luminosidad: "8-10 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "15-20°C" },
+    cebolla: { luminosidad: "10-12 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "15-20°C" },
+    tomate: { luminosidad: "8-10 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "20-25°C" },
+    naranjas: { luminosidad: "8-10 horas", humedad_ambiente: "50-60%", humedad_suelo: "40-50%", temperatura: "25-30°C" },
 };
 
 let chart;
@@ -27,15 +27,13 @@ async function obtenerDatos() {
         let datos = await response.json();
         console.log("Datos obtenidos:", datos);
 
-        // Verifica que la temperatura se está obteniendo correctamente
         console.log("Temperatura obtenida:", datos.temperatura);
 
-        // Actualiza los valores en la página
         document.getElementById("temp").innerText = datos.temperatura + "°C";
-        document.getElementById("humedad").innerText = datos.humedad + "%";
+        document.getElementById("humedad_ambiente").innerText = datos.humedad_ambiente + "%";
+        document.getElementById("humedad_suelo").innerText = datos.humedad_suelo + "%";
         document.getElementById("luz").innerText = datos.luz;
 
-        // También actualiza el gráfico
         actualizarGrafico(datos);
 
     } catch (error) {
@@ -45,12 +43,11 @@ async function obtenerDatos() {
 
 function actualizarGrafico(datos) {
     if (chart) {
-        chart.data.datasets[1].data = [datos.luz, datos.humedad, datos.temperatura];
+        chart.data.datasets[1].data = [datos.luz, datos.humedad_ambiente, datos.suelo , datos.temperatura];
         chart.update();
     }
 }
 
-// Llamar la función cuando el usuario haga clic en un botón
 document.getElementById("actualizar").addEventListener("click", obtenerDatos);
 
 function analizarCultivo() {
@@ -86,15 +83,17 @@ async function render() {
         console.log('Datos obtenidos:', data);
 
         return {
-            luminosidad: data.luz, // CORREGIDO: ahora usa la clave correcta
-            humedad: data.humedad,
+            luminosidad: data.luz,
+            humedad: data.humedad_ambiente,
+            humedad: data.humedad_suelo,
             temperatura: data.temperatura
         };
     } catch (error) {
         console.error('Error al obtener datos del render:', error);
         return {
             luminosidad: 0,
-            humedad: 0,
+            humedad_ambiente: 0,
+            humedad_suelo: 0,
             temperatura: 0
         };
     }
@@ -116,13 +115,14 @@ async function mostrarGrafico(requisitos) {
     chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Luminosidad', 'Humedad', 'Temperatura'],
+            labels: ['Luminosidad', 'Humedad Ambiente', 'Humedad de Suelo', 'Temperatura'],
             datasets: [
                 {
                     label: 'Requisitos del Cultivo',
                     data: [
-                        parseFloat(requisitos.luminosidad), // Mantenemos float
-                        parseInt(requisitos.humedad),
+                        parseFloat(requisitos.luminosidad), 
+                        parseInt(requisitos.humedad_ambiente),
+                        parseInt(requisitos.humedad_suelo),
                         parseInt(requisitos.temperatura)
                     ],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -132,8 +132,9 @@ async function mostrarGrafico(requisitos) {
                 {
                     label: 'Condiciones Actuales',
                     data: [
-                        parseFloat(data.luminosidad), // CORREGIDO: ahora usa float
-                        parseInt(data.humedad),
+                        parseFloat(data.luminosidad), 
+                         parseInt(data.humedad_ambiente),
+                        parseInt(data.humedad_suelo),
                         parseInt(data.temperatura)
                     ],
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
