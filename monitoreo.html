@@ -94,18 +94,18 @@
 
     <script>
         const requisitosCultivos = {
-            mora: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "15-25°C" },
-            lulo: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
-            frijol: { luminosidad: "6-8 horas", humedad: "50-60%", temperatura: "20-30°C" },
-            cafe: { luminosidad: "5-7 horas", humedad: "70-80%", temperatura: "18-24°C" },
-            maiz: { luminosidad: "10-12 horas", humedad: "55-75%", temperatura: "20-30°C" },
-            arveja: { luminosidad: "6-8 horas", humedad: "50-70%", temperatura: "15-20°C" },
-            yuca: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "25-30°C" },
-            auyama: { luminosidad: "6-8 horas", humedad: "60-70%", temperatura: "20-25°C" },
-            papa: { luminosidad: "8-10 horas", humedad: "70-80%", temperatura: "15-20°C" },
-            cebolla: { luminosidad: "10-12 horas", humedad: "60-70%", temperatura: "15-20°C" },
-            tomate: { luminosidad: "8-10 horas", humedad: "60-70%", temperatura: "20-25°C" },
-            naranjas: { luminosidad: "8-10 horas", humedad: "50-60%", temperatura: "25-30°C" }
+        mora: { luminosidad: "6-8 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "15-25°C" },
+        lulo: { luminosidad: "8-10 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "15-20°C" },
+        frijol: { luminosidad: "6-8 horas", humedad_ambiente: "50-60%", humedad_suelo: "40-50%", temperatura: "20-30°C" },
+        cafe: { luminosidad: "5-7 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "18-24°C" },
+        maiz: { luminosidad: "10-12 horas", humedad_ambiente: "55-75%", humedad_suelo: "50-60%", temperatura: "20-30°C" },
+        arveja: { luminosidad: "6-8 horas", humedad_ambiente: "50-70%", humedad_suelo: "40-50%", temperatura: "15-20°C" },
+        yuca: { luminosidad: "8-10 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "25-30°C" },
+        auyama: { luminosidad: "6-8 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "20-25°C" },
+        papa: { luminosidad: "8-10 horas", humedad_ambiente: "70-80%", humedad_suelo: "60-70%", temperatura: "15-20°C" },
+        cebolla: { luminosidad: "10-12 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "15-20°C" },
+        tomate: { luminosidad: "8-10 horas", humedad_ambiente: "60-70%", humedad_suelo: "50-60%", temperatura: "20-25°C" },
+        naranjas: { luminosidad: "8-10 horas", humedad_ambiente: "50-60%", humedad_suelo: "40-50%", temperatura: "25-30°C" },
         };
 
         document.getElementById("btnAnalizar").addEventListener("click", analizarCultivo);
@@ -123,12 +123,13 @@
                 if (!response.ok) throw new Error("Error en la respuesta del servidor");
 
                 const data = await response.json();
-                const { temperatura, humedad, luz } = data;
+                const { temperatura, humedad_ambiente, humedad_suelo, luz } = data;
                 const requisitos = requisitosCultivos[cultivo];
 
                 resultadosDiv.innerHTML = `
                     <div class="card temp"><h3>🌡 Temperatura</h3><p>${temperatura} °C</p></div>
-                    <div class="card hum"><h3>💧 Humedad</h3><p>${humedad} %</p></div>
+                    <div class="card hum"><h3>💧 Humedad Ambiente</h3><p>${humedad_ambiente} %</p></div>
+                    <div class="card hum"><h3>💧 Humedad Suelo</h3><p>${humedad_suelo} %</p></div>
                     <div class="card luz"><h3>☀️ Luz</h3><p>${luz} lux</p></div>
                 `;
 
