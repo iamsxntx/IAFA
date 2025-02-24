@@ -132,7 +132,7 @@ async function mostrarGrafico(requisitos) {
                 {
                     label: 'Condiciones Actuales',
                     data: [
-                        parseFloat(data.luminosidad), // CORREGIDO: ahora usa float
+                        parseFloat(data.luminosidad), 
                         parseInt(data.humedad),
                         parseInt(data.temperatura)
                     ],
