@@ -43,7 +43,7 @@ async function obtenerDatos() {
 
 function actualizarGrafico(datos) {
     if (chart) {
-        chart.data.datasets[1].data = [datos.luz, datos.humedad_ambiente, datos.suelo , datos.temperatura];
+        chart.data.datasets[1].data = [datos.luz, datos.humedad_ambiente, datos.humedad_suelo , datos.temperatura];
         chart.update();
     }
 }
@@ -60,7 +60,8 @@ function analizarCultivo() {
         <h3>Requisitos para cultivar ${cultivo.charAt(0).toUpperCase() + cultivo.slice(1)}:</h3>
         <ul>
             <li><strong>Luminosidad:</strong> ${requisitos.luminosidad}</li>
-            <li><strong>Humedad:</strong> ${requisitos.humedad}</li>
+            <li><strong>Humedad:</strong> ${requisitos.humedad_ambiente}</li>
+            <li><strong>Humedad:</strong> ${requisitos.humedad_suelo}</li>
             <li><strong>Temperatura:</strong> ${requisitos.temperatura}</li>
         </ul>
         <p>¡Verifica si las condiciones de tu suelo son adecuadas!</p>
