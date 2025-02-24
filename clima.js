@@ -187,7 +187,7 @@ function buscarClima() {
     }
 
     climaActualDiv.innerHTML = '<p class="loading">Cargando...</p>';
-    document.getElementById("pronostico").innerHTML = ""; // Limpia el pronóstico anterior
+    document.getElementById("pronostico").innerHTML = ""; 
 
     const departamentoData = departamentos[pais].find(d => d.nombre === departamento);
     const ciudad = departamentoData ? departamentoData.ciudad : '';
