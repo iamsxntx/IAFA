@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO
-from flask_cors import CORS  # Agrega esta línea
+from flask_cors import CORS  
 
 app = Flask(__name__)
 CORS(app)  # Habilita CORS en toda la app
