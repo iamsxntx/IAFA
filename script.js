@@ -60,8 +60,8 @@ function analizarCultivo() {
         <h3>Requisitos para cultivar ${cultivo.charAt(0).toUpperCase() + cultivo.slice(1)}:</h3>
         <ul>
             <li><strong>Luminosidad:</strong> ${requisitos.luminosidad}</li>
-            <li><strong>Humedad:</strong> ${requisitos.humedad_ambiente}</li>
-            <li><strong>Humedad:</strong> ${requisitos.humedad_suelo}</li>
+            <li><strong>Humedad Ambiente:</strong> ${requisitos.humedad_ambiente}</li>
+            <li><strong>Humedad Suelo:</strong> ${requisitos.humedad_suelo}</li>
             <li><strong>Temperatura:</strong> ${requisitos.temperatura}</li>
         </ul>
         <p>¡Verifica si las condiciones de tu suelo son adecuadas!</p>
