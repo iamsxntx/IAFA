@@ -15,6 +15,11 @@ const requisitosCultivos = {
 
 let chart;
 
+function convertirLuxAHoras(lux) {
+    const luxPorHora = 10000; 
+    return lux / luxPorHora;
+}
+
 async function obtenerDatos() {
     try {
         console.log("Intentando obtener datos del servidor...");
@@ -43,7 +48,8 @@ async function obtenerDatos() {
 
 function actualizarGrafico(datos) {
     if (chart) {
-        chart.data.datasets[1].data = [datos.luz, datos.humedad_ambiente, datos.humedad_suelo , datos.temperatura];
+         const horasluz = convertirLuzAHoras(datos.luz)
+        chart.data.datasets[1].data = [horasluz, datos.humedad_ambiente, datos.humedad_suelo , datos.temperatura];
         chart.update();
     }
 }
