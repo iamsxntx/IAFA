@@ -18,7 +18,7 @@ let chart;
 async function obtenerDatos() {
     try {
         console.log("Intentando obtener datos del servidor...");
-        let response = await fetch("https://iafa-h9tv.onrender.com/datos");
+        let response = await fetch("https://iafa-nwz4.onrender.com/datos");
 
         if (!response.ok) {
             throw new Error(`Error en la respuesta del servidor: ${response.status}`);
